@@ -33,4 +33,12 @@ If you find this repository helpful, please consider citing:
   journal={arXiv preprint arXiv:2504.20024},
   year={2025}
 }
+
+@inproceedings{ma2025spatialllm,
+  title={Spatialllm: A compound 3d-informed design towards spatially-intelligent large multimodal models},
+  author={Ma, Wufei and Ye, Luoxin and de Melo, Celso M and Yuille, Alan and Chen, Jieneng},
+  booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},
+  pages={17249--17260},
+  year={2025}
+}
 ```
