@@ -168,3 +168,6 @@ cython_debug/
 
 # macOS auto-generated file
 .DS_Store
+
+# Project-specific files
+pretrained_weights/

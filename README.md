@@ -9,6 +9,13 @@ Johns Hopkins University<br/>
 
 ## Installation
 
+Please check [INSTALL.md](INSTALL.md) for installation instructions. See [Troubleshooting](https://github.com/wufeim/SpatialReasonerDataGen/blob/main/INSTALL.md#troubleshooting) for known issues.
+
+## TODO
+
+- [ ] Release visualization code.
+- [ ] Visualize step-by-step generation results.
+
 ## License
 
 This project is released under the [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.en) license. Please see the [LICENSE](LICENSE) file for more information.
