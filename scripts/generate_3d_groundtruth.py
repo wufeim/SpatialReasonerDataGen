@@ -9,7 +9,8 @@ from tqdm import tqdm
 
 from srdatagen import setup_logging, serialize, SkipSampleException
 from srdatagen.config import cfg
-from srdatagen.modules import TagAndSegment, Reconstruct3D, Pose3DOrientAnything
+from srdatagen.modules import (
+    TagAndSegment, Reconstruct3D, Pose3DOrientAnything, Visualizer)
 
 
 def parse_args():
@@ -51,6 +52,7 @@ def main(args):
     tag_and_segment = TagAndSegment(cfg, args.device)
     reconstruct3d = Reconstruct3D(cfg, args.device)
     pose3d = Pose3DOrientAnything(cfg, args.device)
+    visualizer = Visualizer(cfg)
 
     for filename in tqdm(all_images):
         image_path = os.path.join(args.image_path, filename)
@@ -84,6 +86,10 @@ def main(args):
             json.dump(serialize(
                 annot, save_pcd=args.save_pcd,
             ), fp, indent=4)
+
+        vis_path = os.path.join(args.output_path, '.'.join(filename.split('.')[:-1]))
+        os.makedirs(vis_path, exist_ok=True)
+        visualizer(image, annot, vis_path)
 
 
 if __name__ == '__main__':

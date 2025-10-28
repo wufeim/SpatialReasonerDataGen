@@ -4,6 +4,8 @@ import logging
 import os
 from typing import Any, Dict
 
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+import matplotlib.figure as mplfigure
 import numpy as np
 
 AnnotType = Dict[str, Any]
@@ -114,3 +116,91 @@ def serialize(annot: AnnotType, save_pcd: bool = False) -> AnnotType:
             else:
                 raise NotImplementedError(f'Unknown key {k} with dtype {type(obj[k])}')
     return annot
+
+
+class VisImage:
+    def __init__(self, img, scale=1.0):
+        """
+        Args:
+            img (ndarray): an RGB image of shape (H, W, 3) in range [0, 255].
+            scale (float): scale the input image
+        """
+        self.img = img
+        self.scale = scale
+        self.width, self.height = img.shape[1], img.shape[0]
+        self._setup_figure(img)
+
+    def _setup_figure(self, img):
+        """
+        Args:
+            Same as in :meth:`__init__()`.
+
+        Returns:
+            fig (matplotlib.pyplot.figure): top level container for all the image plot elements.
+            ax (matplotlib.pyplot.Axes): contains figure elements and sets the coordinate system.
+        """
+        fig = mplfigure.Figure(frameon=False)
+        self.dpi = fig.get_dpi()
+        # add a small 1e-2 to avoid precision lost due to matplotlib's truncation
+        # (https://github.com/matplotlib/matplotlib/issues/15363)
+        fig.set_size_inches(
+            (self.width * self.scale + 1e-2) / self.dpi,
+            (self.height * self.scale + 1e-2) / self.dpi,
+        )
+        self.canvas = FigureCanvasAgg(fig)
+        # self.canvas = mpl.backends.backend_cairo.FigureCanvasCairo(fig)
+        ax = fig.add_axes([0.0, 0.0, 1.0, 1.0])
+        ax.axis("off")
+        self.fig = fig
+        self.ax = ax
+        self.reset_image(img)
+
+    def reset_image(self, img):
+        """
+        Args:
+            img: same as in __init__
+        """
+        img = img.astype("uint8")
+        self.ax.imshow(img, extent=(0, self.width, self.height, 0), interpolation="nearest")
+
+    def save(self, filepath):
+        """
+        Args:
+            filepath (str): a string that contains the absolute path, including the file name, where
+                the visualized image will be saved.
+        """
+        self.fig.savefig(filepath)
+
+    def get_image(self):
+        """
+        Returns:
+            ndarray:
+                the visualized image of shape (H, W, 3) (RGB) in uint8 type.
+                The shape is scaled w.r.t the input image using the given `scale` argument.
+        """
+        canvas = self.canvas
+        s, (width, height) = canvas.print_to_buffer()
+        # buf = io.BytesIO()  # works for cairo backend
+        # canvas.print_rgba(buf)
+        # width, height = self.width, self.height
+        # s = buf.getvalue()
+
+        buffer = np.frombuffer(s, dtype="uint8")
+
+        img_rgba = buffer.reshape(height, width, 4)
+        rgb, alpha = np.split(img_rgba, [3], axis=2)
+        return rgb.astype("uint8")
+
+
+def draw_text(vis, x, y, text, color):
+    bbox_background = 'white'
+    vis.ax.text(
+        x, y, text, size=18.0, family="sans-serif",
+        bbox={"facecolor": bbox_background, "alpha": 0.8, "pad": 0.7, "edgecolor": "none"},
+        verticalalignment="top", horizontalalignment="center",
+        color=color, zorder=10, rotation=0)
+    return vis
+
+
+def get_bbox_center(x1, y1, x2, y2, rx=0.5, ry=0.5):
+    return x1+(x2-x1)*rx, y1+(y2-y1)*ry
