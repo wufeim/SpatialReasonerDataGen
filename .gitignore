@@ -171,3 +171,5 @@ cython_debug/
 
 # Project-specific files
 pretrained_weights/
+models--facebook--dinov2-large/
+test_outputs/
