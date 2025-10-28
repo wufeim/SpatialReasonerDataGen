@@ -18,7 +18,7 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
     mim install mmengine
 
     # Other libraries
-    pip install iopath pyequilib==0.3.0 albumentations einops open3d imageio yacs
+    pip install iopath pyequilib==0.3.0 albumentations einops open3d imageio yacs transforms3d
     pip install mmcv==2.2.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.3/index.html
     ```
 
