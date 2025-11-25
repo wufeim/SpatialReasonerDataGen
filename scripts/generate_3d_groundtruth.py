@@ -19,14 +19,14 @@ def parse_args():
     parser.add_argument('--output_path', type=str, default='test_outputs')
     parser.add_argument('--range_low', type=int, default=None)
     parser.add_argument('--range_high', type=int, default=None)
-    parser.add_argument('--md5', type=str, default=None)
+    parser.add_argument('--md5', type=str, default=None,
+                        help='MD5 hash of the image list for file order checking.')
     parser.add_argument('--device', type=str, default='cuda:0')
 
     parser.add_argument('--save_pcd', action='store_true', help='Save full point cloud.')
     return parser.parse_args()
 
 
-# def load_all_images(args, extensions=['.png']):
 def load_all_images(args, extensions=['.jpg', '.jpeg', '.png']):
     all_images = [
         x for x in os.listdir(args.image_path)

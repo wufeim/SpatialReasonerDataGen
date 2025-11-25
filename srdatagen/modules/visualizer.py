@@ -80,12 +80,13 @@ class Visualizer:
             img = cv2.rectangle(img, (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3])), (0, 255, 0), 2)
 
             # Draw 3D pcd
-            pts3d = np.asarray(obj['pcd_cano']['points'])
-            pts3d_uncano = self._uncanonicalize(pts3d, pf_R, min_y)
-            # pts3d_uncano = np.asarray(obj['pcd']['points'])
-            pts2d = project_3d_to_2d(pts3d_uncano, intrinsic, intrinsic[1, 2]*2, intrinsic[0, 2]*2)
-            for i in range(pts2d.shape[0]):
-                img = cv2.circle(img, (int(pts2d[i, 0]), int(pts2d[i, 1])), 1, (255, 0, 0), -1)
+            if 'points' in obj['pcd_cano']:
+                pts3d = np.asarray(obj['pcd_cano']['points'])
+                pts3d_uncano = self._uncanonicalize(pts3d, pf_R, min_y)
+                # pts3d_uncano = np.asarray(obj['pcd']['points'])
+                pts2d = project_3d_to_2d(pts3d_uncano, intrinsic, intrinsic[1, 2]*2, intrinsic[0, 2]*2)
+                for i in range(pts2d.shape[0]):
+                    img = cv2.circle(img, (int(pts2d[i, 0]), int(pts2d[i, 1])), 1, (255, 0, 0), -1)
 
             # Draw 3D center
             pts3d = self._uncanonicalize(np.asarray(obj['pcd_cano_center'])[None, :], pf_R, min_y)
