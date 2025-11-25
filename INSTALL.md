@@ -39,7 +39,7 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
     pip install -e .
     ```
 
-4. Install `Depth-Anything-V2`.
+4. Install `Depth-Anything-V2`. We only need the code in reference import.
 
     ```sh
     git clone https://github.com/DepthAnything/Depth-Anything-V2.git
@@ -54,7 +54,7 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
     pip install -e ./recognize-anything/
     ```
 
-6. Install `PerspectiveFields`.
+6. Install `PerspectiveFields`. We only need the code in reference import.
 
     ```sh
     git clone https://github.com/jinlinyi/PerspectiveFields.git
@@ -94,4 +94,16 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
 
     ```py
     sam_cfg.cfg_path = 'sam2.1/sam2.1_hq_hiera_l.yaml'
+    ```
+
+2. Error when installing `GroundingDINO`.
+
+    ```sh
+    ERROR: Project file:///home/xxx/GroundingDINO uses a build backend that is missing the 'build_editable' hook, so it cannot be installed in editable mode. Consider using a build backend that supports PEP 660.
+    ```
+
+    Upgrade `pip` and `setuptools`:
+
+    ```sh
+    pip install --upgrade pip setuptools
     ```
