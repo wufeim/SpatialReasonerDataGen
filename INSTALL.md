@@ -70,6 +70,12 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
     wget https://huggingface.co/Viglong/Orient-Anything/resolve/main/croplargeEX2/dino_weight.pt -P pretrained_weights
     ```
 
+8. Install `srdatagen`.
+
+    ```sh
+    pip install -e .
+    ```
+
 ## Troubleshooting
 
 1. Getting `GlobalHydra` not initialized error when building `SAM2`:
@@ -106,4 +112,10 @@ Follow the instructions to install dependencies. See [Troubleshooting](#troubles
 
     ```sh
     pip install --upgrade pip setuptools
+    ```
+
+3. Cannot import `apply_chunking_to_forward`. Need to downgrade `transformers`, e.g.,
+
+    ```sh
+    pip install transformers==4.52.3
     ```
